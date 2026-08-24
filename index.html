@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Piano by Sam</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600&family=Creepster&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: radial-gradient(circle at center, #2a2a2a 0%, #000000 100%);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            margin: 0;
+            position: relative;
+        }
+
+        .mobile-container {
+            width: 100vh;
+            height: 100vw;
+            background: #000000;
+            position: absolute;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transform: rotate(90deg);
+            transform-origin: center;
+        }
+
+        @media (orientation: landscape) {
+            .mobile-container {
+                width: 100vw;
+                height: 100vh;
+                transform: none;
+                position: relative;
+            }
+        }
+
+        .status-bar {
+            height: 24px;
+            background: #000000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            color: #666;
+            font-size: 0.6rem;
+            font-weight: 600;
+            z-index: 20;
+        }
+
+        .dashboard-panel {
+            height: 100px;
+            background: linear-gradient(to bottom, #ffffff 0%, #000000 100%);
+            border-bottom: 4px solid #000000;
+            box-shadow: inset 0 -2px 5px rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px 16px;
+            position: relative;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .digital-screen {
+            background: #050505;
+            border: 2px solid #ffffff;
+            border-radius: 8px;
+            flex: 1;
+            height: 80px;
+            padding: 4px 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.9);
+            transition: all 0.3s ease;
+        }
+
+        .keyboard-bed {
+            background: #0d0d0d;
+            flex: 1;
+            padding: 2px;
+            box-shadow: inset 0 6px 12px rgba(0,0,0,0.95);
+            display: flex;
+            position: relative;
+            user-select: none;
+            overflow: hidden;
+        }
+
+        .white-key {
+            flex: 1;
+            background: linear-gradient(to bottom, #ffffff 0%, #f3f3f3 85%, #d9d9d9 100%);
+            border-left: 1px solid #c2c2c2;
+            border-right: 1px solid #c2c2c2;
+            border-bottom: 5px solid #b8b8b8;
+            border-radius: 0 0 5px 5px;
+            box-shadow: -1px 2px 3px rgba(0,0,0,0.25), inset 0 4px 6px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.05s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 8px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #8c8c8c;
+        }
+
+        .white-key:hover {
+            background: linear-gradient(to bottom, #ffffff 0%, #fafafa 85%, #e1e1e1 100%);
+        }
+
+        .white-key.active, .white-key:active {
+            background: linear-gradient(to bottom, #e1e1e1 0%, #cecece 100%);
+            border-bottom-width: 1px;
+            transform: translateY(4px);
+            box-shadow: -1px 1px 1px rgba(0,0,0,0.2);
+            color: #222;
+        }
+
+        .black-key {
+            background: linear-gradient(to bottom, #2b2b2b 0%, #121212 80%, #000000 100%);
+            border-left: 1px solid #474747;
+            border-right: 1px solid #474747;
+            border-bottom: 4px solid #1a1a1a;
+            border-radius: 0 0 3px 3px;
+            box-shadow: -2px 3px 4px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.15);
+            cursor: pointer;
+            position: absolute;
+            z-index: 10;
+            transition: all 0.05s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 6px;
+            font-size: 0.5rem;
+            color: #595959;
+        }
+
+        .black-key:hover {
+            background: linear-gradient(to bottom, #3b3b3b 0%, #1a1a1a 80%, #050505 100%);
+        }
+
+        .black-key.active, .black-key:active {
+            background: linear-gradient(to bottom, #1a1a1a 0%, #000000 100%);
+            border-bottom-width: 1px;
+            transform: translateY(3px);
+            box-shadow: -1px 2px 2px rgba(0,0,0,0.4);
+            color: #8c8c8c;
+        }
+
+        /* ========== HORROR LAYERS ========== */
+
+        /* Full-screen jumpscare overlay */
+        #jumpscare-layer {
+            position: absolute;
+            inset: 0;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: black;
+            transition: opacity 0.02s ease;
+        }
+
+        .show-scare {
+            opacity: 1 !important;
+        }
+
+        @keyframes violent-shake {
+            0% { transform: translate(15px, 15px) scale(1.4); filter: brightness(3) contrast(2); }
+            10% { transform: translate(-20px, 10px) scale(1.45); filter: brightness(0.5) contrast(3); }
+            20% { transform: translate(18px, -18px) scale(1.38); filter: brightness(4) contrast(1.5) invert(0.1); }
+            30% { transform: translate(-15px, -12px) scale(1.42); filter: brightness(0.3) contrast(2.5); }
+            40% { transform: translate(20px, 15px) scale(1.35); filter: brightness(2) contrast(2) saturate(3); }
+            50% { transform: translate(-18px, 20px) scale(1.48); filter: brightness(5) contrast(3) invert(0.2); }
+            60% { transform: translate(12px, -20px) scale(1.4); filter: brightness(0.2) contrast(2); }
+            70% { transform: translate(-20px, 8px) scale(1.44); filter: brightness(3) contrast(2.5) hue-rotate(180deg); }
+            80% { transform: translate(15px, -15px) scale(1.36); filter: brightness(0.8) contrast(3); }
+            90% { transform: translate(-12px, 18px) scale(1.5); filter: brightness(4) contrast(2) invert(0.15); }
+            100% { transform: translate(15px, 15px) scale(1.4); filter: brightness(3) contrast(2); }
+        }
+
+        .scare-transform {
+            animation: violent-shake 0.04s infinite;
+        }
+
+        /* Screen crack overlay */
+        #crack-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 50;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            background: radial-gradient(circle at 40% 35%, transparent 0%, transparent 5%, rgba(0,0,0,0.03) 5.5%, transparent 6%),
+                        radial-gradient(circle at 60% 55%, transparent 0%, transparent 3%, rgba(0,0,0,0.02) 3.5%, transparent 4%);
+        }
+
+        .crack-svg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Blood drip overlay */
+        #blood-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 45;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+            overflow: hidden;
+        }
+
+        .blood-drip {
+            position: absolute;
+            top: -20px;
+            width: 6px;
+            background: linear-gradient(to bottom, #8b0000 0%, #5c0000 60%, transparent 100%);
+            border-radius: 0 0 50% 50%;
+            animation: drip var(--drip-speed, 4s) ease-in forwards;
+            animation-delay: var(--drip-delay, 0s);
+        }
+
+        @keyframes drip {
+            0% { height: 0; opacity: 0.8; }
+            100% { height: 120%; opacity: 0.3; }
+        }
+
+        /* Flicker overlay */
+        #flicker-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 55;
+            pointer-events: none;
+            opacity: 0;
+            background: white;
+            mix-blend-mode: overlay;
+        }
+
+        /* Fake crash screen */
+        #crash-screen {
+            position: absolute;
+            inset: 0;
+            z-index: 900;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #0a0a0a;
+            color: #333;
+            font-family: monospace;
+            padding: 30px;
+        }
+
+        .crash-text {
+            font-size: 11px;
+            line-height: 1.8;
+            text-align: center;
+            color: #444;
+        }
+
+        .crash-text .error { color: #8b0000; }
+
+        /* Glitch text overlay */
+        #glitch-text-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 60;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.1s;
+        }
+
+        .glitch-msg {
+            font-family: 'Creepster', cursive;
+            font-size: 3rem;
+            color: #8b0000;
+            text-shadow: 0 0 10px #ff0000, 0 0 30px #8b0000, 2px 2px 0 #000;
+            letter-spacing: 6px;
+            animation: glitch-text 0.1s infinite;
+        }
+
+        @keyframes glitch-text {
+            0% { transform: translate(0, 0) skewX(0deg); }
+            20% { transform: translate(-3px, 2px) skewX(-2deg); }
+            40% { transform: translate(3px, -1px) skewX(1deg); }
+            60% { transform: translate(-2px, -2px) skewX(3deg); }
+            80% { transform: translate(2px, 1px) skewX(-1deg); }
+            100% { transform: translate(0, 0) skewX(0deg); }
+        }
+
+        /* Static noise overlay */
+        #static-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 40;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            background-size: 100px 100px;
+        }
+
+        /* Whisper text that appears randomly */
+        .whisper-text {
+            position: absolute;
+            z-index: 35;
+            font-family: 'Creepster', cursive;
+            pointer-events: none;
+            opacity: 0;
+            animation: whisper-fade 2s ease-in-out forwards;
+        }
+
+        @keyframes whisper-fade {
+            0% { opacity: 0; transform: scale(0.8); }
+            30% { opacity: 0.4; transform: scale(1); }
+            70% { opacity: 0.3; transform: scale(1.05); }
+            100% { opacity: 0; transform: scale(1.1); }
+        }
+
+        /* Vignette darkness around edges */
+        #vignette-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 30;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 2s ease;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.8) 100%);
+        }
+
+        /* Heartbeat pulse effect on the container */
+        @keyframes heartbeat-pulse {
+            0% { box-shadow: inset 0 0 0 rgba(139,0,0,0); }
+            15% { box-shadow: inset 0 0 60px rgba(139,0,0,0.3); }
+            30% { box-shadow: inset 0 0 0 rgba(139,0,0,0); }
+            45% { box-shadow: inset 0 0 40px rgba(139,0,0,0.2); }
+            100% { box-shadow: inset 0 0 0 rgba(139,0,0,0); }
+        }
+
+        .heartbeat-active {
+            animation: heartbeat-pulse 1.2s ease-in-out infinite;
+        }
+
+        /* Corrupted scanlines */
+        #scanline-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 38;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.15) 2px,
+                rgba(0, 0, 0, 0.15) 4px
+            );
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container" id="main-container">
+        
+        <!-- Horror Overlays -->
+        <div id="jumpscare-layer">
+            <img id="scare-img" src="" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+
+        <div id="crash-screen">
+            <div class="crash-text">
+                <p>FATAL ERROR: Memory corruption detected</p>
+                <p class="error">0x00000F3A: SYSTEM_THREAD_EXCEPTION_NOT_HANDLED</p>
+                <p>Audio subsystem failure at 0xDEAD0666</p>
+                <p style="margin-top:12px;">Collecting error info...</p>
+                <div id="crash-progress" style="width:200px;height:4px;background:#222;margin:12px auto;border-radius:2px;overflow:hidden;">
+                    <div id="crash-bar" style="width:0%;height:100%;background:#8b0000;transition:width 2s ease;"></div>
+                </div>
+                <p id="crash-percent" style="font-size:10px;color:#555;">0% complete</p>
+            </div>
+        </div>
+
+        <div id="crack-overlay">
+            <svg class="crack-svg" viewBox="0 0 1000 600" preserveAspectRatio="none">
+                <path d="M420,0 L415,80 L390,120 L410,180 L380,250 L400,320 L370,400 L395,500 L380,600" 
+                      stroke="rgba(255,255,255,0.12)" stroke-width="1.5" fill="none"/>
+                <path d="M420,0 L440,60 L470,130 L450,200" 
+                      stroke="rgba(255,255,255,0.08)" stroke-width="1" fill="none"/>
+                <path d="M390,120 L350,160 L310,140" 
+                      stroke="rgba(255,255,255,0.06)" stroke-width="0.8" fill="none"/>
+                <path d="M380,250 L340,280 L300,260 L260,300" 
+                      stroke="rgba(255,255,255,0.07)" stroke-width="0.8" fill="none"/>
+                <path d="M410,180 L450,210 L480,190 L520,230" 
+                      stroke="rgba(255,255,255,0.06)" stroke-width="0.8" fill="none"/>
+                <path d="M600,0 L610,90 L590,160 L620,250 L580,350 L610,450 L590,600" 
+                      stroke="rgba(255,255,255,0.08)" stroke-width="1" fill="none"/>
+            </svg>
+        </div>
+
+        <div id="blood-overlay"></div>
+        <div id="flicker-overlay"></div>
+        <div id="glitch-text-overlay"><span class="glitch-msg" id="glitch-msg-text">HELP ME</span></div>
+        <div id="static-overlay"></div>
+        <div id="vignette-overlay"></div>
+        <div id="scanline-overlay"></div>
+
+        <!-- Premium Splash Screen -->
+        <div id="splash-screen" class="absolute inset-0 bg-gradient-to-b from-neutral-900 to-neutral-950 z-50 flex flex-col items-center justify-between py-16 transition-opacity duration-700" style="z-index:2000">
+            <div class="flex flex-col items-center gap-1 mt-6">
+                <h1 class="text-5xl font-extrabold tracking-[8px] bg-gradient-to-r from-white via-neutral-100 to-neutral-400 bg-clip-text text-transparent font-serif">PIANO</h1>
+                <p class="text-xs tracking-[4px] text-neutral-300/60 font-semibold font-mono">BY SAM</p>
+            </div>
+            
+            <div class="flex flex-col items-center gap-4 mb-4 w-full">
+                <div class="w-1/2 flex flex-col items-center gap-2" id="loading-container">
+                    <div class="w-full bg-neutral-800 h-1 rounded-full overflow-hidden">
+                        <div id="loading-bar" class="bg-gradient-to-r from-neutral-400 to-white h-full w-0 transition-all duration-1500 ease-out"></div>
+                    </div>
+                    <p class="text-[9px] text-neutral-500 uppercase tracking-widest font-mono">Loading Studio...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="status-bar" id="status-bar">
+            <span id="status-time">12:00</span>
+            <div class="flex items-center gap-2">
+                <span id="status-wifi">WiFi Connected</span>
+                <span id="status-battery">85%</span>
+                <div class="w-5 h-3 border border-neutral-600 rounded-sm relative flex items-center p-0.5">
+                    <div class="bg-neutral-500 h-full w-3.5" id="battery-fill"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Panel -->
+        <div class="dashboard-panel" id="dashboard-panel">
+            <div class="flex flex-col gap-1.5 bg-black/30 p-1.5 rounded-lg border border-white/5 w-40">
+                <div class="flex justify-between items-center">
+                    <label class="text-[9px] text-white/60 uppercase font-mono tracking-wider font-semibold">Preset</label>
+                    <select id="synth-mode" class="bg-black border border-white text-[8px] text-white font-mono rounded px-1.5 py-0.5 outline-none cursor-pointer">
+                        <option value="grand">Grand Piano</option>
+                        <option value="ambient">Ambient Space</option>
+                        <option value="organ">Church Organ</option>
+                        <option value="guitar">Acoustic Guitar</option>
+                        <option value="retro">8-Bit Retro</option>
+                    </select>
+                </div>
+                <div class="flex justify-between items-center">
+                    <label class="text-[9px] text-white/60 uppercase font-mono tracking-wider font-semibold">Volume</label>
+                    <input id="volume-slider" type="range" min="0" max="100" value="70" class="w-20 h-1 accent-white bg-black rounded-lg appearance-none cursor-pointer">
+                </div>
+            </div>
+
+            <div class="digital-screen" id="digital-screen">
+                <div class="flex justify-between text-[7px] font-mono text-white/90 tracking-wide font-semibold">
+                    <span id="screen-mode">MODE: GRAND PIANO</span>
+                    <span id="screen-octave">OCTAVE: C4 - B5</span>
+                </div>
+                
+                <canvas id="visualizer" class="w-full h-8 rounded bg-black/40 border border-neutral-900"></canvas>
+                
+                <div class="flex justify-between items-center text-[7px] text-stone-500 font-mono">
+                    <span>VOL: <span id="vol-lbl">70%</span></span>
+                    <span class="flex items-center gap-1 font-semibold" id="online-indicator">
+                        <span class="w-1 h-1 rounded-full bg-white animate-pulse" id="online-dot"></span>
+                        <span id="online-text">ONLINE</span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex flex-col justify-between items-end h-full py-1">
+                <div class="text-right">
+                    <div class="text-black font-mono text-[8px] tracking-wider font-semibold" id="brand-sub">SAM INSTRUMENTS</div>
+                    <div class="text-black font-serif text-[10px] tracking-[2px] font-bold" id="brand-main">PIANO STUDIO</div>
+                </div>
+                
+                <div class="flex items-center gap-2 bg-black/30 p-1 rounded-lg border border-white/5 w-40 justify-between">
+                    <span class="text-[9px] text-white/60 uppercase font-mono tracking-wider font-semibold">Octave</span>
+                    <div class="flex gap-1">
+                        <button id="octave-down" class="bg-black border border-white text-[8px] text-white font-mono rounded px-2.5 py-0.5 hover:bg-neutral-800 active:scale-95 transition-all">&lt;</button>
+                        <button id="octave-up" class="bg-black border border-white text-[8px] text-white font-mono rounded px-2.5 py-0.5 hover:bg-neutral-800 active:scale-95 transition-all">&gt;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Keyboard -->
+        <div id="piano-keyboard" class="keyboard-bed relative"></div>
+
+        <!-- Home Indicator -->
+        <div class="bg-black py-1 flex justify-center items-center">
+            <div class="w-24 h-1 bg-neutral-700 rounded-full"></div>
+        </div>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let clicks = 0;
+        let lastInteraction = Date.now();
+        let currentOctave = 4;
+        let horrorPhase = 0; // 0=normal, 1=unsettling, 2=dread, 3=terror, 4=FINAL
+        let finalTriggered = false;
+        let whisperInterval = null;
+        let staticNoiseCanvas = null;
+
+        // Scary images — deeply unsettling horror faces
+        const images = [
+            'https://media.istockphoto.com/id/2164801702/photo/possessed-girl-with-white-eyes.jpg?s=612x612&w=0&k=20&c=PzlGUfQao1US0PAV3wEwrGhRwnL68uFoPngkG2HI_zc=',
+            'https://media.gettyimages.com/id/2164222202/video/possessed-girl-with-white-eyes.jpg?s=640x640&k=20&c=FJx3ZOjlp36yVpn9h70GBjpOeX4LiuO4lGkBWSaVJGo=',
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbUh4QWw_Xrg0ob0nhoWrtVE3MPwK1idi1oo1QisyRAZ5YalTCyOcb_V4&s=10',
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLMin-pWzSyBM88Jia8Wlwz55H35S4-vh7aECrNG1TmwhEFNTXVbvsWjLd&s=10'
+        ];
+
+        // Creepy whisper messages
+        const creepyMessages = [
+            'HELP ME', 'I SEE YOU', 'BEHIND YOU', 'DON\'T LOOK', 
+            'IT\'S HERE', 'RUN', 'CAN YOU HEAR ME', 'I\'M INSIDE',
+            'STOP PLAYING', 'TOO LATE', 'HE WATCHES', 'NOT ALONE',
+            'YOUR TURN', 'LOOK UP', 'CLOSER', 'DO YOU SEE IT'
+        ];
+
+        const corruptedNotes = ['D̷̤̈#', 'F̸̧̛', 'C̵͎̈́', 'Ḁ̴̛', 'G̷̱̈́', 'B̶̗̐', 'E̸̞̔'];
+
+        // Preload images
+        images.forEach(src => { const i = new Image(); i.src = src; });
+
+        // Web Audio Analyser
+        const analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 64;
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+        analyser.connect(audioCtx.destination);
+
+        // Visualizer
+        const canvas = document.getElementById('visualizer');
+        const canvasCtx = canvas.getContext('2d');
+
+        function drawVisualizer() {
+            requestAnimationFrame(drawVisualizer);
+            analyser.getByteFrequencyData(dataArray);
+            
+            canvasCtx.fillStyle = '#050505';
+            canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const barWidth = (canvas.width / bufferLength) * 1.5;
+            let x = 0;
+            
+            for (let i = 0; i < bufferLength; i++) {
+                const barHeight = dataArray[i] / 5.5;
+                const grad = canvasCtx.createLinearGradient(0, canvas.height, 0, canvas.height - barHeight);
+
+                if (horrorPhase >= 3) {
+                    grad.addColorStop(0, '#8b0000');
+                    grad.addColorStop(1, '#ff0000');
+                } else if (horrorPhase >= 2) {
+                    grad.addColorStop(0, '#5c3a3a');
+                    grad.addColorStop(1, '#cc4444');
+                } else if (horrorPhase >= 1) {
+                    grad.addColorStop(0, '#6b6b6b');
+                    grad.addColorStop(1, '#cccccc');
+                } else {
+                    grad.addColorStop(0, '#737373');
+                    grad.addColorStop(1, '#ffffff');
+                }
+                
+                canvasCtx.fillStyle = grad;
+                canvasCtx.fillRect(x, canvas.height - barHeight, barWidth - 1, barHeight);
+                x += barWidth;
+            }
+        }
+        drawVisualizer();
+
+        // ============ HORROR AUDIO ENGINE ============
+
+        // Deep sub-bass terror hit (replaces screaming)
+        function playTerrorBass(volumeVal) {
+            const now = audioCtx.currentTime;
+            
+            // Sub-bass that you FEEL in your chest
+            const subOsc = audioCtx.createOscillator();
+            subOsc.type = 'sine';
+            subOsc.frequency.setValueAtTime(30, now);
+            subOsc.frequency.exponentialRampToValueAtTime(18, now + 2.5);
+            
+            const subGain = audioCtx.createGain();
+            subGain.gain.setValueAtTime(volumeVal * 1.5, now);
+            subGain.gain.exponentialRampToValueAtTime(0.001, now + 3);
+            
+            subOsc.connect(subGain);
+            subGain.connect(analyser);
+            subOsc.start(now);
+            subOsc.stop(now + 3);
+
+            // Distorted growl
+            const growlOsc = audioCtx.createOscillator();
+            growlOsc.type = 'sawtooth';
+            growlOsc.frequency.setValueAtTime(55, now);
+            growlOsc.frequency.linearRampToValueAtTime(35, now + 0.3);
+            growlOsc.frequency.exponentialRampToValueAtTime(20, now + 2);
+
+            const distortion = audioCtx.createWaveShaper();
+            function makeDistortionCurve(amount) {
+                const k = amount;
+                const n = 44100;
+                const curve = new Float32Array(n);
+                const deg = Math.PI / 180;
+                for (let i = 0; i < n; ++i) {
+                    const x = (i * 2) / n - 1;
+                    curve[i] = (3 + k) * x * 20 * deg / (Math.PI + k * Math.abs(x));
+                }
+                return curve;
+            }
+            distortion.curve = makeDistortionCurve(200);
+            distortion.oversample = '4x';
+
+            const growlGain = audioCtx.createGain();
+            growlGain.gain.setValueAtTime(volumeVal * 0.8, now);
+            growlGain.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
+
+            growlOsc.connect(distortion);
+            distortion.connect(growlGain);
+            growlGain.connect(analyser);
+            growlOsc.start(now);
+            growlOsc.stop(now + 2.5);
+
+            // Impact transient — sharp attack
+            const impactBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.3, audioCtx.sampleRate);
+            const impactData = impactBuffer.getChannelData(0);
+            for (let i = 0; i < impactData.length; i++) {
+                impactData[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audioCtx.sampleRate * 0.02));
+            }
+            const impact = audioCtx.createBufferSource();
+            impact.buffer = impactBuffer;
+            const impactGain = audioCtx.createGain();
+            impactGain.gain.setValueAtTime(volumeVal * 2, now);
+            impact.connect(impactGain);
+            impactGain.connect(analyser);
+            impact.start(now);
+
+            // Reverse reverb tail
+            const reverbLen = audioCtx.sampleRate * 3;
+            const reverbBuf = audioCtx.createBuffer(1, reverbLen, audioCtx.sampleRate);
+            const reverbData = reverbBuf.getChannelData(0);
+            for (let i = 0; i < reverbLen; i++) {
+                reverbData[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audioCtx.sampleRate * 0.8)) * 0.3;
+            }
+            const reverb = audioCtx.createConvolver();
+            reverb.buffer = reverbBuf;
+
+            const reverbOsc = audioCtx.createOscillator();
+            reverbOsc.type = 'sine';
+            reverbOsc.frequency.value = 40;
+            const reverbGain = audioCtx.createGain();
+            reverbGain.gain.setValueAtTime(volumeVal * 0.5, now);
+            reverbGain.gain.exponentialRampToValueAtTime(0.001, now + 3);
+            reverbOsc.connect(reverb);
+            reverb.connect(reverbGain);
+            reverbGain.connect(analyser);
+            reverbOsc.start(now);
+            reverbOsc.stop(now + 3);
+        }
+
+        // Subtle whisper sound (synthesized)
+        function playWhisper(volumeVal) {
+            const now = audioCtx.currentTime;
+            const bufSize = audioCtx.sampleRate * 1.5;
+            const buf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+            const d = buf.getChannelData(0);
+            for (let i = 0; i < bufSize; i++) {
+                d[i] = (Math.random() * 2 - 1);
+            }
+            const src = audioCtx.createBufferSource();
+            src.buffer = buf;
+
+            const bp = audioCtx.createBiquadFilter();
+            bp.type = 'bandpass';
+            bp.frequency.value = 2000 + Math.random() * 2000;
+            bp.Q.value = 8;
+
+            const lfo = audioCtx.createOscillator();
+            lfo.type = 'sine';
+            lfo.frequency.value = 3 + Math.random() * 5;
+            const lfoGain = audioCtx.createGain();
+            lfoGain.gain.value = 500;
+            lfo.connect(lfoGain);
+            lfoGain.connect(bp.frequency);
+
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(0, now);
+            gain.gain.linearRampToValueAtTime(volumeVal * 0.06, now + 0.3);
+            gain.gain.linearRampToValueAtTime(volumeVal * 0.04, now + 0.8);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 1.5);
+
+            src.connect(bp);
+            bp.connect(gain);
+            gain.connect(analyser);
+            lfo.start(now);
+            src.start(now);
+            lfo.stop(now + 1.5);
+            src.stop(now + 1.5);
+        }
+
+        // Heartbeat sound
+        function playHeartbeat(volumeVal, rate) {
+            const now = audioCtx.currentTime;
+            const beatInterval = 60 / rate;
+            
+            for (let beat = 0; beat < 2; beat++) {
+                const t = now + beat * (beatInterval * 0.3);
+                const osc = audioCtx.createOscillator();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(beat === 0 ? 50 : 40, t);
+                osc.frequency.exponentialRampToValueAtTime(25, t + 0.15);
+                
+                const g = audioCtx.createGain();
+                g.gain.setValueAtTime(0, t);
+                g.gain.linearRampToValueAtTime(volumeVal * (beat === 0 ? 0.3 : 0.2), t + 0.02);
+                g.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
+                
+                osc.connect(g);
+                g.connect(analyser);
+                osc.start(t);
+                osc.stop(t + 0.25);
+            }
+        }
+
+        // Eerie drone
+        function playDrone(volumeVal) {
+            const now = audioCtx.currentTime;
+            const osc1 = audioCtx.createOscillator();
+            osc1.type = 'sine';
+            osc1.frequency.value = 80;
+            
+            const osc2 = audioCtx.createOscillator();
+            osc2.type = 'sine';
+            osc2.frequency.value = 83; // Slight beating
+            
+            const g = audioCtx.createGain();
+            g.gain.setValueAtTime(0, now);
+            g.gain.linearRampToValueAtTime(volumeVal * 0.08, now + 1);
+            g.gain.linearRampToValueAtTime(volumeVal * 0.06, now + 3);
+            g.gain.exponentialRampToValueAtTime(0.001, now + 5);
+            
+            osc1.connect(g);
+            osc2.connect(g);
+            g.connect(analyser);
+            osc1.start(now);
+            osc2.start(now);
+            osc1.stop(now + 5);
+            osc2.stop(now + 5);
+        }
+
+        // ============ VISUAL HORROR ENGINE ============
+
+        // Generate static noise on canvas
+        function generateStaticNoise() {
+            const overlay = document.getElementById('static-overlay');
+            if (!staticNoiseCanvas) {
+                staticNoiseCanvas = document.createElement('canvas');
+                staticNoiseCanvas.width = 200;
+                staticNoiseCanvas.height = 200;
+            }
+            const ctx = staticNoiseCanvas.getContext('2d');
+            const imageData = ctx.createImageData(200, 200);
+            for (let i = 0; i < imageData.data.length; i += 4) {
+                const v = Math.random() * 255;
+                imageData.data[i] = v;
+                imageData.data[i+1] = v;
+                imageData.data[i+2] = v;
+                imageData.data[i+3] = 40;
+            }
+            ctx.putImageData(imageData, 0, 0);
+            overlay.style.backgroundImage = `url(${staticNoiseCanvas.toDataURL()})`;
+        }
+
+        // Spawn blood drips
+        function spawnBloodDrips(count) {
+            const overlay = document.getElementById('blood-overlay');
+            overlay.style.opacity = '1';
+            for (let i = 0; i < count; i++) {
+                const drip = document.createElement('div');
+                drip.className = 'blood-drip';
+                drip.style.left = `${Math.random() * 100}%`;
+                drip.style.setProperty('--drip-speed', `${3 + Math.random() * 5}s`);
+                drip.style.setProperty('--drip-delay', `${Math.random() * 2}s`);
+                drip.style.width = `${3 + Math.random() * 6}px`;
+                drip.style.opacity = 0.4 + Math.random() * 0.4;
+                overlay.appendChild(drip);
+                setTimeout(() => drip.remove(), 8000);
+            }
+        }
+
+        // Flash whisper text on screen
+        function showWhisperText() {
+            const container = document.getElementById('main-container');
+            const text = document.createElement('div');
+            text.className = 'whisper-text';
+            text.textContent = creepyMessages[Math.floor(Math.random() * creepyMessages.length)];
+            text.style.left = `${10 + Math.random() * 70}%`;
+            text.style.top = `${10 + Math.random() * 70}%`;
+            text.style.fontSize = `${12 + Math.random() * 20}px`;
+            text.style.color = `rgba(139, 0, 0, ${0.2 + Math.random() * 0.3})`;
+            text.style.transform = `rotate(${-15 + Math.random() * 30}deg)`;
+            container.appendChild(text);
+            setTimeout(() => text.remove(), 2500);
+        }
+
+        // Flicker effect
+        function triggerFlicker(duration, intensity) {
+            const overlay = document.getElementById('flicker-overlay');
+            let flickerCount = 0;
+            const maxFlickers = Math.floor(duration / 50);
+            const flickerLoop = setInterval(() => {
+                overlay.style.opacity = Math.random() < 0.5 ? (Math.random() * intensity) : '0';
+                flickerCount++;
+                if (flickerCount >= maxFlickers) {
+                    clearInterval(flickerLoop);
+                    overlay.style.opacity = '0';
+                }
+            }, 40 + Math.random() * 30);
+        }
+
+        // Corrupt UI text
+        function corruptUIText() {
+            const screenMode = document.getElementById('screen-mode');
+            const screenOctave = document.getElementById('screen-octave');
+            const onlineText = document.getElementById('online-text');
+            const onlineDot = document.getElementById('online-dot');
+            const statusTime = document.getElementById('status-time');
+            const statusWifi = document.getElementById('status-wifi');
+            const brandSub = document.getElementById('brand-sub');
+            const brandMain = document.getElementById('brand-main');
+
+            if (horrorPhase >= 1) {
+                statusTime.textContent = '6:66';
+            }
+            if (horrorPhase >= 2) {
+                screenMode.textContent = 'MODE: Ŭ̸N̴K̷N̸O̸W̷N̵';
+                statusWifi.textContent = 'NO SIGNAL';
+                onlineText.textContent = 'WATCHING';
+                onlineDot.style.background = '#8b0000';
+                brandSub.textContent = 'H̸E̷L̵P̶ ̸M̵E̶';
+            }
+            if (horrorPhase >= 3) {
+                screenOctave.textContent = 'D̷̤̈Ö̵̧N̵̰̊\'̷̣T̵̗ ̸̞L̸̙̈́Ö̴͚Ö̵̧K̶';
+                brandMain.textContent = 'I̸T̵\'̶S̷ ̸H̶E̸R̸E̶';
+                brandSub.textContent = 'R̸̡̈́U̷̧̔N̸̰̊';
+                onlineText.textContent = 'HE SEES';
+                document.getElementById('status-battery').textContent = '0%';
+                document.getElementById('battery-fill').style.width = '0';
+            }
+        }
+
+        // ============ HORROR PHASE SYSTEM ============
+
+        function updateHorrorPhase() {
+            const prevPhase = horrorPhase;
+            
+            if (clicks >= 28) horrorPhase = 4;
+            else if (clicks >= 20) horrorPhase = 3;
+            else if (clicks >= 13) horrorPhase = 2;
+            else if (clicks >= 7) horrorPhase = 1;
+            else horrorPhase = 0;
+
+            if (horrorPhase !== prevPhase) {
+                onPhaseChange(horrorPhase);
+            }
+
+            updateHorrorVisuals();
+        }
+
+        function onPhaseChange(phase) {
+            const vol = parseFloat(document.getElementById('volume-slider').value) / 100;
+
+            if (phase === 1) {
+                // Phase 1: Unsettling — vignette, clock change, slight static
+                document.getElementById('vignette-overlay').style.opacity = '0.5';
+                document.getElementById('scanline-overlay').style.opacity = '0.3';
+                generateStaticNoise();
+                document.getElementById('static-overlay').style.opacity = '0.1';
+                corruptUIText();
+            }
+
+            if (phase === 2) {
+                // Phase 2: Dread — cracks appear, blood drips start, whispers begin
+                document.getElementById('crack-overlay').style.opacity = '1';
+                document.getElementById('vignette-overlay').style.opacity = '0.8';
+                document.getElementById('scanline-overlay').style.opacity = '0.5';
+                document.getElementById('static-overlay').style.opacity = '0.2';
+                spawnBloodDrips(5);
+                corruptUIText();
+                playDrone(vol);
+                
+                // Start periodic whispers
+                whisperInterval = setInterval(() => {
+                    if (horrorPhase >= 2 && Date.now() - lastInteraction < 8000) {
+                        showWhisperText();
+                        playWhisper(vol);
+                    }
+                }, 2500);
+            }
+
+            if (phase === 3) {
+                // Phase 3: Terror — heavy effects, heartbeat, screen corruption
+                document.getElementById('vignette-overlay').style.opacity = '1';
+                document.getElementById('static-overlay').style.opacity = '0.35';
+                document.getElementById('main-container').classList.add('heartbeat-active');
+                spawnBloodDrips(10);
+                corruptUIText();
+                triggerFlicker(800, 0.3);
+                
+                // Occasional flicker + glitch text flash
+                const terrorInterval = setInterval(() => {
+                    if (horrorPhase >= 3 && !finalTriggered) {
+                        if (Math.random() < 0.4) {
+                            triggerFlicker(300, 0.5);
+                        }
+                        if (Math.random() < 0.3) {
+                            const glitchOverlay = document.getElementById('glitch-text-overlay');
+                            document.getElementById('glitch-msg-text').textContent = 
+                                creepyMessages[Math.floor(Math.random() * creepyMessages.length)];
+                            glitchOverlay.style.opacity = '1';
+                            setTimeout(() => { glitchOverlay.style.opacity = '0'; }, 200);
+                        }
+                        playHeartbeat(vol, 120);
+                    } else {
+                        clearInterval(terrorInterval);
+                    }
+                }, 1500);
+            }
+
+            if (phase === 4 && !finalTriggered) {
+                triggerFinalHorror();
+            }
+        }
+
+        // ============ THE FINAL HORROR ============
+        function triggerFinalHorror() {
+            finalTriggered = true;
+            const vol = parseFloat(document.getElementById('volume-slider').value) / 100;
+
+            document.getElementById('main-container').classList.remove('heartbeat-active');
+            
+            // Instant white flash
+            document.getElementById('flicker-overlay').style.opacity = '1';
+
+            // Maximum terror jumpscare instantly
+            setTimeout(() => {
+                const layer = document.getElementById('jumpscare-layer');
+                const img = document.getElementById('scare-img');
+                img.src = images[Math.floor(Math.random() * images.length)];
+                
+                document.getElementById('flicker-overlay').style.opacity = '0';
+                layer.classList.add('show-scare', 'scare-transform');
+                playTerrorBass(vol); // Play the horrific traumatic bass sound
+
+                // Rapid image switching for extra disorientation
+                let imgSwaps = 0;
+                const swapInterval = setInterval(() => {
+                    img.src = images[Math.floor(Math.random() * images.length)];
+                    imgSwaps++;
+                    if (imgSwaps > 6) clearInterval(swapInterval);
+                }, 100);
+
+                // Hold the scare for a long terrifying moment
+                setTimeout(() => {
+                    layer.classList.remove('show-scare', 'scare-transform');
+                    
+                    // Aftermath: screen stays heavily corrupted
+                    document.getElementById('static-overlay').style.opacity = '0.7';
+                    document.getElementById('vignette-overlay').style.opacity = '1';
+                    
+                    // One more delayed mini-scare shortly after
+                    setTimeout(() => {
+                        if (finalTriggered) {
+                            layer.classList.add('show-scare', 'scare-transform');
+                            img.src = images[Math.floor(Math.random() * images.length)];
+                            playTerrorBass(vol * 0.8);
+                            setTimeout(() => {
+                                layer.classList.remove('show-scare', 'scare-transform');
+                            }, 500);
+                        }
+                    }, 2000);
+                }, 1500);
+            }, 50); // Only a 50ms delay for the initial flash before the scare hits
+        }
+
+        // Gradual key/dashboard horror visual changes
+        function updateHorrorVisuals() {
+            const whiteKeys = document.querySelectorAll('.white-key');
+            const blackKeys = document.querySelectorAll('.black-key');
+            const dashboard = document.querySelector('.dashboard-panel');
+            const digitalScreen = document.getElementById('digital-screen');
+            
+            const intensity = Math.min(1, clicks / 28);
+            
+            // Keys turn blood red gradually
+            whiteKeys.forEach((key, idx) => {
+                const r = Math.round(255 - (255 - 138) * intensity);
+                const g = Math.round(255 - 255 * intensity);
+                const b = Math.round(255 - 255 * intensity);
+                key.style.background = `linear-gradient(to bottom, #ffffff 0%, rgb(${r}, ${g}, ${b}) 100%)`;
+                key.style.borderBottom = `${5 - Math.round(4 * intensity)}px solid rgb(${Math.round(184 - 100 * intensity)}, ${Math.round(184 - 180 * intensity)}, ${Math.round(184 - 180 * intensity)})`;
+                
+                // Corrupted note labels at higher phases
+                if (horrorPhase >= 3 && Math.random() < 0.3) {
+                    const span = key.querySelector('span');
+                    if (span && Math.random() < 0.15) {
+                        span.textContent = corruptedNotes[Math.floor(Math.random() * corruptedNotes.length)];
+                        span.style.color = '#8b0000';
+                    }
+                }
+            });
+            
+            blackKeys.forEach(key => {
+                const r = Math.round(43 + (138 - 43) * intensity);
+                const g = Math.round(43 - 43 * intensity);
+                const b = Math.round(43 - 43 * intensity);
+                key.style.background = `linear-gradient(to bottom, rgb(${r}, ${g}, ${b}) 0%, #000000 100%)`;
+            });
+            
+            // Dashboard panel corruption
+            if (clicks >= 7) {
+                const woodIntensity = Math.min(1, (clicks - 7) / 21);
+                const r = Math.round(255 - (255 - 100) * woodIntensity);
+                const g = Math.round(255 - 255 * woodIntensity);
+                const b = Math.round(255 - 255 * woodIntensity);
+                dashboard.style.background = `linear-gradient(to bottom, rgb(${r}, ${g}, ${b}) 0%, #000000 100%)`;
+                
+                const textColor = Math.round(255 * woodIntensity);
+                document.getElementById('brand-sub').style.color = `rgb(${textColor}, ${textColor}, ${textColor})`;
+                document.getElementById('brand-main').style.color = `rgb(${textColor}, ${textColor}, ${textColor})`;
+
+                // Digital screen border turns red
+                digitalScreen.style.borderColor = `rgb(${Math.round(255 - 117 * woodIntensity)}, ${Math.round(255 - 255 * woodIntensity)}, ${Math.round(255 - 255 * woodIntensity)})`;
+            } else {
+                dashboard.style.background = 'linear-gradient(to bottom, #ffffff 0%, #000000 100%)';
+                document.getElementById('brand-sub').style.color = '#000000';
+                document.getElementById('brand-main').style.color = '#000000';
+                digitalScreen.style.borderColor = '#ffffff';
+            }
+        }
+
+        // ============ PIANO SYNTH ENGINE ============
+
+        let firstInteractionTime = null;
+
+        function playNote(freq) {
+            if (!firstInteractionTime) firstInteractionTime = Date.now();
+            
+            // Only progress the horror after 25 seconds of normal use
+            if (Date.now() - firstInteractionTime > 25000) {
+                clicks++;
+            }
+            
+            lastInteraction = Date.now();
+            updateHorrorPhase();
+
+            const volumeVal = parseFloat(document.getElementById('volume-slider').value) / 100;
+            const mode = document.getElementById('synth-mode').value;
+
+            const osc = audioCtx.createOscillator();
+            const osc2 = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            let detuneVal = 0;
+            let noiseVol = 0;
+
+            // Progressive detuning based on horror phase
+            if (horrorPhase >= 4) {
+                detuneVal = 1200;
+                noiseVol = 1.5;
+            } else if (horrorPhase >= 3) {
+                detuneVal = 300 + Math.random() * 200;
+                noiseVol = 0.15;
+                // Random octave drops
+                if (Math.random() < 0.3) freq *= 0.5;
+            } else if (horrorPhase >= 2) {
+                detuneVal = 80 + Math.random() * 60;
+                noiseVol = 0.04;
+            } else if (horrorPhase >= 1) {
+                detuneVal = 15 + Math.random() * 20;
+                noiseVol = 0.01;
+            }
+
+            osc.frequency.value = freq;
+            osc.detune.setValueAtTime(detuneVal, audioCtx.currentTime);
+            
+            if (detuneVal > 0) {
+                osc2.type = 'sawtooth';
+                osc2.frequency.value = freq * (horrorPhase >= 3 ? 1.414 : 1.059);
+                osc2.detune.setValueAtTime(detuneVal * 0.8, audioCtx.currentTime);
+                const gain2 = audioCtx.createGain();
+                gain2.gain.setValueAtTime(volumeVal * 0.4, audioCtx.currentTime);
+                osc2.connect(gain2);
+                gain2.connect(gainNode);
+                osc2.start();
+                osc2.stop(audioCtx.currentTime + 2.0);
+            } else {
+                if (mode === 'grand') {
+                    osc.type = 'sine';
+                    osc2.type = 'triangle';
+                    osc2.frequency.value = freq;
+                    const gain2 = audioCtx.createGain();
+                    gain2.gain.setValueAtTime(volumeVal * 0.5, audioCtx.currentTime);
+                    osc2.connect(gain2);
+                    gain2.connect(gainNode);
+                    osc2.start();
+                    osc2.stop(audioCtx.currentTime + 2.0);
+                    
+                    gainNode.gain.setValueAtTime(volumeVal, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.0);
+                } else if (mode === 'ambient') {
+                    osc.type = 'sine';
+                    osc.detune.value = -15;
+                    osc2.type = 'sine';
+                    osc2.frequency.value = freq * 2;
+                    const gain2 = audioCtx.createGain();
+                    gain2.gain.setValueAtTime(volumeVal * 0.2, audioCtx.currentTime);
+                    osc2.connect(gain2);
+                    gain2.connect(gainNode);
+                    osc2.start();
+                    osc2.stop(audioCtx.currentTime + 4.0);
+                    
+                    gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+                    gainNode.gain.linearRampToValueAtTime(volumeVal, audioCtx.currentTime + 0.1);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 4.0);
+                } else if (mode === 'organ') {
+                    osc.type = 'square';
+                    osc2.type = 'sawtooth';
+                    osc2.frequency.value = freq * 0.5;
+                    const gain2 = audioCtx.createGain();
+                    gain2.gain.setValueAtTime(volumeVal * 0.3, audioCtx.currentTime);
+                    osc2.connect(gain2);
+                    gain2.connect(gainNode);
+                    osc2.start();
+                    osc2.stop(audioCtx.currentTime + 1.5);
+                    
+                    gainNode.gain.setValueAtTime(volumeVal, audioCtx.currentTime);
+                    gainNode.gain.linearRampToValueAtTime(volumeVal * 0.8, audioCtx.currentTime + 0.1);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
+                } else if (mode === 'guitar') {
+                    // Plucked string approximation
+                    osc.type = 'sawtooth';
+                    
+                    // Lowpass filter for pluck
+                    const filter = audioCtx.createBiquadFilter();
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(3000, audioCtx.currentTime);
+                    filter.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 1.5);
+                    
+                    osc.connect(filter);
+                    filter.connect(gainNode);
+                    
+                    gainNode.gain.setValueAtTime(volumeVal * 1.5, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.5);
+                } else {
+                    // Retro
+                    osc.type = 'square';
+                    osc2.type = 'square';
+                    osc2.frequency.value = freq * 2;
+                    osc2.detune.value = 5;
+                    const gain2 = audioCtx.createGain();
+                    gain2.gain.setValueAtTime(volumeVal * 0.2, audioCtx.currentTime);
+                    osc2.connect(gain2);
+                    gain2.connect(gainNode);
+                    osc2.start();
+                    osc2.stop(audioCtx.currentTime + 0.5);
+                    
+                    gainNode.gain.setValueAtTime(volumeVal, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+                }
+            }
+
+            if (mode !== 'guitar' || detuneVal > 0) {
+                osc.connect(gainNode);
+            }
+            
+            gainNode.connect(analyser);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + 2.0);
+
+            // Horror noise layer
+            if (noiseVol > 0) {
+                const now = audioCtx.currentTime;
+                const noiseDur = horrorPhase >= 3 ? 2.0 : 1.0;
+                const bufferSize = audioCtx.sampleRate * noiseDur;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                const noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
+
+                const noiseFilter = audioCtx.createBiquadFilter();
+                noiseFilter.type = 'bandpass';
+                noiseFilter.frequency.value = horrorPhase >= 3 ? 600 : 1500;
+                noiseFilter.Q.value = 2.0;
+
+                const noiseGain = audioCtx.createGain();
+                noiseGain.gain.setValueAtTime(noiseVol, now);
+                noiseGain.gain.exponentialRampToValueAtTime(0.001, now + noiseDur);
+
+                noise.connect(noiseFilter);
+                noiseFilter.connect(noiseGain);
+                noiseGain.connect(analyser);
+                noise.start(now);
+                noise.stop(now + noiseDur);
+            }
+
+            // Phase-specific audio triggers on certain clicks
+            if (horrorPhase >= 2 && Math.random() < 0.25) {
+                playWhisper(volumeVal);
+            }
+            if (horrorPhase >= 3 && Math.random() < 0.2) {
+                playHeartbeat(volumeVal, 100 + clicks * 3);
+            }
+            if (horrorPhase >= 2 && Math.random() < 0.15) {
+                spawnBloodDrips(2);
+            }
+            if (horrorPhase >= 3 && Math.random() < 0.2) {
+                triggerFlicker(200, 0.4);
+            }
+        }
+
+        // ============ KEYBOARD RENDERING ============
+
+        const whiteNames = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'A', 'B', 'C'];
+        const whiteOffsets = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21, 23, 24];
+        
+        const blackOffsets = [
+            { afterIndex: 0, semitone: 1, label: 'C#' },
+            { afterIndex: 1, semitone: 3, label: 'D#' },
+            { afterIndex: 3, semitone: 6, label: 'F#' },
+            { afterIndex: 4, semitone: 8, label: 'G#' },
+            { afterIndex: 5, semitone: 10, label: 'A#' },
+            { afterIndex: 7, semitone: 13, label: 'C#' },
+            { afterIndex: 8, semitone: 15, label: 'D#' },
+            { afterIndex: 10, semitone: 18, label: 'F#' },
+            { afterIndex: 11, semitone: 20, label: 'G#' },
+            { afterIndex: 12, semitone: 22, label: 'A#' }
+        ];
+
+        let isDragging = false;
+        let currentDraggedKey = null;
+
+        document.addEventListener('mousedown', () => isDragging = true);
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            currentDraggedKey = null;
+        });
+        document.addEventListener('touchend', () => {
+            currentDraggedKey = null;
+        });
+
+        function getNoteFreq(semitoneOffset) {
+            const semitonesFromA4 = semitoneOffset + (currentOctave - 4) * 12 - 9;
+            return 440 * Math.pow(2, semitonesFromA4 / 12);
+        }
+
+        function renderKeyboard() {
+            const keyboard = document.getElementById('piano-keyboard');
+            keyboard.innerHTML = '';
+            
+            const keyboardWidth = keyboard.clientWidth;
+            const keyboardHeight = keyboard.clientHeight;
+            const whiteKeyWidth = keyboardWidth / 15;
+            const blackKeyWidth = Math.max(16, whiteKeyWidth * 0.54);
+            const blackKeyHeight = keyboardHeight * 0.58;
+            
+            whiteOffsets.forEach((offset, idx) => {
+                const key = document.createElement('div');
+                key.className = 'white-key';
+                
+                let noteOctave = currentOctave;
+                if (idx >= 7 && idx < 14) noteOctave += 1;
+                else if (idx >= 14) noteOctave += 2;
+
+                const noteName = `${whiteNames[idx]}${noteOctave}`;
+                key.innerHTML = `<span>${noteName}</span>`;
+                
+                const freq = getNoteFreq(offset);
+                key.dataset.freq = freq; // Save for touch drag
+                
+                key.addEventListener('mousedown', () => {
+                    playNote(freq);
+                    key.classList.add('active');
+                });
+                key.addEventListener('mouseenter', () => {
+                    if (isDragging) {
+                        playNote(freq);
+                        key.classList.add('active');
+                    }
+                });
+                key.addEventListener('mouseup', () => key.classList.remove('active'));
+                key.addEventListener('mouseleave', () => key.classList.remove('active'));
+                
+                key.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    playNote(freq);
+                    key.classList.add('active');
+                    currentDraggedKey = key;
+                });
+                key.addEventListener('touchend', () => key.classList.remove('active'));
+                
+                keyboard.appendChild(key);
+            });
+
+            blackOffsets.forEach(black => {
+                const key = document.createElement('div');
+                key.className = 'black-key';
+                key.style.width = `${blackKeyWidth}px`;
+                key.style.height = `${blackKeyHeight}px`;
+                
+                let noteOctave = currentOctave;
+                if (black.afterIndex >= 7) noteOctave += 1;
+
+                const noteName = `${black.label}${noteOctave}`;
+                key.innerHTML = `<span>${noteName}</span>`;
+                
+                const leftPos = (black.afterIndex + 1) * whiteKeyWidth - (blackKeyWidth / 2);
+                key.style.left = `${leftPos}px`;
+                key.style.top = '2px';
+
+                const freq = getNoteFreq(black.semitone);
+                key.dataset.freq = freq; // Save for touch drag
+
+                key.addEventListener('mousedown', (e) => {
+                    e.stopPropagation();
+                    playNote(freq);
+                    key.classList.add('active');
+                });
+                key.addEventListener('mouseenter', (e) => {
+                    if (isDragging) {
+                        playNote(freq);
+                        key.classList.add('active');
+                    }
+                });
+                key.addEventListener('mouseup', () => key.classList.remove('active'));
+                key.addEventListener('mouseleave', () => key.classList.remove('active'));
+                
+                key.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    playNote(freq);
+                    key.classList.add('active');
+                    currentDraggedKey = key;
+                });
+                key.addEventListener('touchend', () => key.classList.remove('active'));
+                
+                keyboard.appendChild(key);
+            });
+
+            // Handle touch drag across keys (glissando)
+            keyboard.ontouchmove = (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const element = document.elementFromPoint(touch.clientX, touch.clientY);
+                
+                if (element && (element.classList.contains('white-key') || element.classList.contains('black-key'))) {
+                    if (currentDraggedKey !== element) {
+                        if (currentDraggedKey) currentDraggedKey.classList.remove('active');
+                        currentDraggedKey = element;
+                        element.classList.add('active');
+                        playNote(parseFloat(element.dataset.freq));
+                    }
+                } else {
+                    if (currentDraggedKey) {
+                        currentDraggedKey.classList.remove('active');
+                        currentDraggedKey = null;
+                    }
+                }
+            };
+
+            const nextOctave = currentOctave + 1;
+            document.getElementById('screen-octave').innerText = `OCTAVE: C${currentOctave} - B${nextOctave}`;
+            
+            // Re-apply horror visuals after re-render
+            if (clicks > 0) updateHorrorVisuals();
+        }
+
+        // Idle monitoring — ambient horror during inactivity
+        setInterval(() => {
+            const timeSinceLastClick = Date.now() - lastInteraction;
+            
+            if (horrorPhase >= 3 && timeSinceLastClick >= 3000 && timeSinceLastClick < 4000 && !finalTriggered) {
+                // Ambient mini-scare during inactivity at high horror
+                const layer = document.getElementById('jumpscare-layer');
+                const img = document.getElementById('scare-img');
+                img.src = images[Math.floor(Math.random() * images.length)];
+                layer.classList.add('show-scare', 'scare-transform');
+                playTerrorBass(parseFloat(document.getElementById('volume-slider').value) / 100 * 0.5);
+                setTimeout(() => {
+                    layer.classList.remove('show-scare', 'scare-transform');
+                }, 600);
+            }
+
+            // Reset after extended inactivity
+            if (clicks > 0 && timeSinceLastClick >= 10000) {
+                clicks = 0;
+                horrorPhase = 0;
+                finalTriggered = false;
+                if (whisperInterval) clearInterval(whisperInterval);
+                
+                // Clean all overlays
+                document.getElementById('vignette-overlay').style.opacity = '0';
+                document.getElementById('crack-overlay').style.opacity = '0';
+                document.getElementById('blood-overlay').style.opacity = '0';
+                document.getElementById('blood-overlay').innerHTML = '';
+                document.getElementById('static-overlay').style.opacity = '0';
+                document.getElementById('scanline-overlay').style.opacity = '0';
+                document.getElementById('glitch-text-overlay').style.opacity = '0';
+                document.getElementById('main-container').classList.remove('heartbeat-active');
+                
+                // Restore UI text
+                document.getElementById('status-time').textContent = '12:00';
+                document.getElementById('status-wifi').textContent = 'WiFi Connected';
+                document.getElementById('status-battery').textContent = '85%';
+                document.getElementById('battery-fill').style.width = '3.5';
+                document.getElementById('screen-mode').textContent = 'MODE: GRAND PIANO';
+                document.getElementById('online-text').textContent = 'ONLINE';
+                document.getElementById('online-dot').style.background = 'white';
+                document.getElementById('digital-screen').style.borderColor = '#ffffff';
+                
+                updateHorrorVisuals();
+                renderKeyboard();
+            }
+
+            // Regenerate static noise
+            if (horrorPhase >= 1) {
+                generateStaticNoise();
+            }
+        }, 500);
+
+        // Initialize
+        renderKeyboard();
+        window.addEventListener('resize', renderKeyboard);
+        setTimeout(renderKeyboard, 100);
+
+        // Controls
+        document.getElementById('synth-mode').addEventListener('change', (e) => {
+            document.getElementById('screen-mode').innerText = `MODE: ${e.target.options[e.target.selectedIndex].text.toUpperCase()}`;
+        });
+
+        document.getElementById('volume-slider').addEventListener('input', (e) => {
+            document.getElementById('vol-lbl').innerText = `${e.target.value}%`;
+        });
+
+        document.getElementById('octave-down').addEventListener('click', () => {
+            if (currentOctave > 2) { currentOctave--; renderKeyboard(); }
+        });
+
+        document.getElementById('octave-up').addEventListener('click', () => {
+            if (currentOctave < 5) { currentOctave++; renderKeyboard(); }
+        });
+
+        // Unlock audio context and play romantic intro
+        let romanticIntroPlayed = false;
+
+        function playRomanticIntro() {
+            if (romanticIntroPlayed) return;
+            romanticIntroPlayed = true;
+
+            const now = audioCtx.currentTime;
+            const volumeVal = parseFloat(document.getElementById('volume-slider').value) / 100;
+
+            // Beautiful, cascading harp-like arpeggio (C Major 9)
+            const notes = [261.63, 329.63, 392.00, 493.88, 587.33, 783.99, 1046.50]; 
+            
+            notes.forEach((freq, i) => {
+                const osc = audioCtx.createOscillator();
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+                
+                const gain = audioCtx.createGain();
+                gain.gain.setValueAtTime(0, now + i * 0.12);
+                gain.gain.linearRampToValueAtTime(volumeVal * 0.15, now + i * 0.12 + 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 4.0);
+                
+                osc.connect(gain);
+                gain.connect(analyser);
+                
+                osc.start(now + i * 0.12);
+                osc.stop(now + i * 0.12 + 4.0);
+            });
+
+            // Lush, warm ambient pad underneath
+            const padNotes = [130.81, 196.00, 164.81]; // C3, G3, E3
+            padNotes.forEach((freq) => {
+                const osc = audioCtx.createOscillator();
+                osc.type = 'triangle';
+                osc.frequency.value = freq;
+                
+                const gain = audioCtx.createGain();
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(volumeVal * 0.08, now + 1.5);
+                gain.gain.linearRampToValueAtTime(volumeVal * 0.05, now + 3.0);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 5.0);
+                
+                // Add a gentle filter for warmth
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(400, now);
+                filter.frequency.linearRampToValueAtTime(800, now + 1.5);
+                filter.frequency.exponentialRampToValueAtTime(200, now + 5.0);
+
+                osc.connect(filter);
+                filter.connect(gain);
+                gain.connect(analyser);
+                
+                osc.start(now);
+                osc.stop(now + 5.0);
+            });
+        }
+
+        // Splash and Audio Init
+        window.addEventListener('DOMContentLoaded', () => {
+            const bar = document.getElementById('loading-bar');
+            const splash = document.getElementById('splash-screen');
+
+            // Attempt to autoplay romantic piano intro
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            playRomanticIntro();
+
+            // Animate loading bar
+            setTimeout(() => { bar.style.width = '100%'; }, 100);
+            
+            // Hide splash after loading finishes
+            setTimeout(() => { splash.classList.add('opacity-0', 'pointer-events-none'); }, 2500);
+        });
+
+        // Fallback: If browser blocks autoplay, play immediately on first click
+        ['click', 'mousedown', 'touchstart', 'keydown'].forEach(evt => {
+            window.addEventListener(evt, () => {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                playRomanticIntro();
+            }, { once: true });
+        });
+    </script>
+</body>
+</html>

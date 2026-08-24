@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Piano by Sam</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600&family=Creepster&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600&family=Creepster&display=swap"
+        rel="stylesheet">
     <style>
         body {
             background: radial-gradient(circle at center, #2a2a2a 0%, #000000 100%);
@@ -58,7 +61,7 @@
             height: 100px;
             background: linear-gradient(to bottom, #ffffff 0%, #000000 100%);
             border-bottom: 4px solid #000000;
-            box-shadow: inset 0 -2px 5px rgba(0,0,0,0.8);
+            box-shadow: inset 0 -2px 5px rgba(0, 0, 0, 0.8);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -78,7 +81,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: inset 0 0 8px rgba(0,0,0,0.9);
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.9);
             transition: all 0.3s ease;
         }
 
@@ -86,7 +89,7 @@
             background: #0d0d0d;
             flex: 1;
             padding: 2px;
-            box-shadow: inset 0 6px 12px rgba(0,0,0,0.95);
+            box-shadow: inset 0 6px 12px rgba(0, 0, 0, 0.95);
             display: flex;
             position: relative;
             user-select: none;
@@ -100,7 +103,7 @@
             border-right: 1px solid #c2c2c2;
             border-bottom: 5px solid #b8b8b8;
             border-radius: 0 0 5px 5px;
-            box-shadow: -1px 2px 3px rgba(0,0,0,0.25), inset 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: -1px 2px 3px rgba(0, 0, 0, 0.25), inset 0 4px 6px rgba(0, 0, 0, 0.05);
             cursor: pointer;
             transition: all 0.05s ease;
             position: relative;
@@ -118,11 +121,12 @@
             background: linear-gradient(to bottom, #ffffff 0%, #fafafa 85%, #e1e1e1 100%);
         }
 
-        .white-key.active, .white-key:active {
+        .white-key.active,
+        .white-key:active {
             background: linear-gradient(to bottom, #e1e1e1 0%, #cecece 100%);
             border-bottom-width: 1px;
             transform: translateY(4px);
-            box-shadow: -1px 1px 1px rgba(0,0,0,0.2);
+            box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.2);
             color: #222;
         }
 
@@ -132,7 +136,7 @@
             border-right: 1px solid #474747;
             border-bottom: 4px solid #1a1a1a;
             border-radius: 0 0 3px 3px;
-            box-shadow: -2px 3px 4px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.15);
+            box-shadow: -2px 3px 4px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
             cursor: pointer;
             position: absolute;
             z-index: 10;
@@ -150,11 +154,12 @@
             background: linear-gradient(to bottom, #3b3b3b 0%, #1a1a1a 80%, #050505 100%);
         }
 
-        .black-key.active, .black-key:active {
+        .black-key.active,
+        .black-key:active {
             background: linear-gradient(to bottom, #1a1a1a 0%, #000000 100%);
             border-bottom-width: 1px;
             transform: translateY(3px);
-            box-shadow: -1px 2px 2px rgba(0,0,0,0.4);
+            box-shadow: -1px 2px 2px rgba(0, 0, 0, 0.4);
             color: #8c8c8c;
         }
 
@@ -179,17 +184,60 @@
         }
 
         @keyframes violent-shake {
-            0% { transform: translate(15px, 15px) scale(1.4); filter: brightness(3) contrast(2); }
-            10% { transform: translate(-20px, 10px) scale(1.45); filter: brightness(0.5) contrast(3); }
-            20% { transform: translate(18px, -18px) scale(1.38); filter: brightness(4) contrast(1.5) invert(0.1); }
-            30% { transform: translate(-15px, -12px) scale(1.42); filter: brightness(0.3) contrast(2.5); }
-            40% { transform: translate(20px, 15px) scale(1.35); filter: brightness(2) contrast(2) saturate(3); }
-            50% { transform: translate(-18px, 20px) scale(1.48); filter: brightness(5) contrast(3) invert(0.2); }
-            60% { transform: translate(12px, -20px) scale(1.4); filter: brightness(0.2) contrast(2); }
-            70% { transform: translate(-20px, 8px) scale(1.44); filter: brightness(3) contrast(2.5) hue-rotate(180deg); }
-            80% { transform: translate(15px, -15px) scale(1.36); filter: brightness(0.8) contrast(3); }
-            90% { transform: translate(-12px, 18px) scale(1.5); filter: brightness(4) contrast(2) invert(0.15); }
-            100% { transform: translate(15px, 15px) scale(1.4); filter: brightness(3) contrast(2); }
+            0% {
+                transform: translate(15px, 15px) scale(1.4);
+                filter: brightness(3) contrast(2);
+            }
+
+            10% {
+                transform: translate(-20px, 10px) scale(1.45);
+                filter: brightness(0.5) contrast(3);
+            }
+
+            20% {
+                transform: translate(18px, -18px) scale(1.38);
+                filter: brightness(4) contrast(1.5) invert(0.1);
+            }
+
+            30% {
+                transform: translate(-15px, -12px) scale(1.42);
+                filter: brightness(0.3) contrast(2.5);
+            }
+
+            40% {
+                transform: translate(20px, 15px) scale(1.35);
+                filter: brightness(2) contrast(2) saturate(3);
+            }
+
+            50% {
+                transform: translate(-18px, 20px) scale(1.48);
+                filter: brightness(5) contrast(3) invert(0.2);
+            }
+
+            60% {
+                transform: translate(12px, -20px) scale(1.4);
+                filter: brightness(0.2) contrast(2);
+            }
+
+            70% {
+                transform: translate(-20px, 8px) scale(1.44);
+                filter: brightness(3) contrast(2.5) hue-rotate(180deg);
+            }
+
+            80% {
+                transform: translate(15px, -15px) scale(1.36);
+                filter: brightness(0.8) contrast(3);
+            }
+
+            90% {
+                transform: translate(-12px, 18px) scale(1.5);
+                filter: brightness(4) contrast(2) invert(0.15);
+            }
+
+            100% {
+                transform: translate(15px, 15px) scale(1.4);
+                filter: brightness(3) contrast(2);
+            }
         }
 
         .scare-transform {
@@ -204,8 +252,8 @@
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.5s ease;
-            background: radial-gradient(circle at 40% 35%, transparent 0%, transparent 5%, rgba(0,0,0,0.03) 5.5%, transparent 6%),
-                        radial-gradient(circle at 60% 55%, transparent 0%, transparent 3%, rgba(0,0,0,0.02) 3.5%, transparent 4%);
+            background: radial-gradient(circle at 40% 35%, transparent 0%, transparent 5%, rgba(0, 0, 0, 0.03) 5.5%, transparent 6%),
+                radial-gradient(circle at 60% 55%, transparent 0%, transparent 3%, rgba(0, 0, 0, 0.02) 3.5%, transparent 4%);
         }
 
         .crack-svg {
@@ -236,8 +284,15 @@
         }
 
         @keyframes drip {
-            0% { height: 0; opacity: 0.8; }
-            100% { height: 120%; opacity: 0.3; }
+            0% {
+                height: 0;
+                opacity: 0.8;
+            }
+
+            100% {
+                height: 120%;
+                opacity: 0.3;
+            }
         }
 
         /* Flicker overlay */
@@ -273,7 +328,9 @@
             color: #444;
         }
 
-        .crash-text .error { color: #8b0000; }
+        .crash-text .error {
+            color: #8b0000;
+        }
 
         /* Glitch text overlay */
         #glitch-text-overlay {
@@ -298,12 +355,29 @@
         }
 
         @keyframes glitch-text {
-            0% { transform: translate(0, 0) skewX(0deg); }
-            20% { transform: translate(-3px, 2px) skewX(-2deg); }
-            40% { transform: translate(3px, -1px) skewX(1deg); }
-            60% { transform: translate(-2px, -2px) skewX(3deg); }
-            80% { transform: translate(2px, 1px) skewX(-1deg); }
-            100% { transform: translate(0, 0) skewX(0deg); }
+            0% {
+                transform: translate(0, 0) skewX(0deg);
+            }
+
+            20% {
+                transform: translate(-3px, 2px) skewX(-2deg);
+            }
+
+            40% {
+                transform: translate(3px, -1px) skewX(1deg);
+            }
+
+            60% {
+                transform: translate(-2px, -2px) skewX(3deg);
+            }
+
+            80% {
+                transform: translate(2px, 1px) skewX(-1deg);
+            }
+
+            100% {
+                transform: translate(0, 0) skewX(0deg);
+            }
         }
 
         /* Static noise overlay */
@@ -328,10 +402,25 @@
         }
 
         @keyframes whisper-fade {
-            0% { opacity: 0; transform: scale(0.8); }
-            30% { opacity: 0.4; transform: scale(1); }
-            70% { opacity: 0.3; transform: scale(1.05); }
-            100% { opacity: 0; transform: scale(1.1); }
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            30% {
+                opacity: 0.4;
+                transform: scale(1);
+            }
+
+            70% {
+                opacity: 0.3;
+                transform: scale(1.05);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(1.1);
+            }
         }
 
         /* Vignette darkness around edges */
@@ -342,16 +431,30 @@
             pointer-events: none;
             opacity: 0;
             transition: opacity 2s ease;
-            background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.8) 100%);
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.8) 100%);
         }
 
         /* Heartbeat pulse effect on the container */
         @keyframes heartbeat-pulse {
-            0% { box-shadow: inset 0 0 0 rgba(139,0,0,0); }
-            15% { box-shadow: inset 0 0 60px rgba(139,0,0,0.3); }
-            30% { box-shadow: inset 0 0 0 rgba(139,0,0,0); }
-            45% { box-shadow: inset 0 0 40px rgba(139,0,0,0.2); }
-            100% { box-shadow: inset 0 0 0 rgba(139,0,0,0); }
+            0% {
+                box-shadow: inset 0 0 0 rgba(139, 0, 0, 0);
+            }
+
+            15% {
+                box-shadow: inset 0 0 60px rgba(139, 0, 0, 0.3);
+            }
+
+            30% {
+                box-shadow: inset 0 0 0 rgba(139, 0, 0, 0);
+            }
+
+            45% {
+                box-shadow: inset 0 0 40px rgba(139, 0, 0, 0.2);
+            }
+
+            100% {
+                box-shadow: inset 0 0 0 rgba(139, 0, 0, 0);
+            }
         }
 
         .heartbeat-active {
@@ -366,20 +469,19 @@
             pointer-events: none;
             opacity: 0;
             transition: opacity 1s ease;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 2px,
-                rgba(0, 0, 0, 0.15) 2px,
-                rgba(0, 0, 0, 0.15) 4px
-            );
+            background: repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 0, 0, 0.15) 2px,
+                    rgba(0, 0, 0, 0.15) 4px);
         }
     </style>
 </head>
+
 <body>
 
     <div class="mobile-container" id="main-container">
-        
+
         <!-- Horror Overlays -->
         <div id="jumpscare-layer">
             <img id="scare-img" src="" style="width:100%;height:100%;object-fit:cover;">
@@ -391,7 +493,8 @@
                 <p class="error">0x00000F3A: SYSTEM_THREAD_EXCEPTION_NOT_HANDLED</p>
                 <p>Audio subsystem failure at 0xDEAD0666</p>
                 <p style="margin-top:12px;">Collecting error info...</p>
-                <div id="crash-progress" style="width:200px;height:4px;background:#222;margin:12px auto;border-radius:2px;overflow:hidden;">
+                <div id="crash-progress"
+                    style="width:200px;height:4px;background:#222;margin:12px auto;border-radius:2px;overflow:hidden;">
                     <div id="crash-bar" style="width:0%;height:100%;background:#8b0000;transition:width 2s ease;"></div>
                 </div>
                 <p id="crash-percent" style="font-size:10px;color:#555;">0% complete</p>
@@ -400,18 +503,17 @@
 
         <div id="crack-overlay">
             <svg class="crack-svg" viewBox="0 0 1000 600" preserveAspectRatio="none">
-                <path d="M420,0 L415,80 L390,120 L410,180 L380,250 L400,320 L370,400 L395,500 L380,600" 
-                      stroke="rgba(255,255,255,0.12)" stroke-width="1.5" fill="none"/>
-                <path d="M420,0 L440,60 L470,130 L450,200" 
-                      stroke="rgba(255,255,255,0.08)" stroke-width="1" fill="none"/>
-                <path d="M390,120 L350,160 L310,140" 
-                      stroke="rgba(255,255,255,0.06)" stroke-width="0.8" fill="none"/>
-                <path d="M380,250 L340,280 L300,260 L260,300" 
-                      stroke="rgba(255,255,255,0.07)" stroke-width="0.8" fill="none"/>
-                <path d="M410,180 L450,210 L480,190 L520,230" 
-                      stroke="rgba(255,255,255,0.06)" stroke-width="0.8" fill="none"/>
-                <path d="M600,0 L610,90 L590,160 L620,250 L580,350 L610,450 L590,600" 
-                      stroke="rgba(255,255,255,0.08)" stroke-width="1" fill="none"/>
+                <path d="M420,0 L415,80 L390,120 L410,180 L380,250 L400,320 L370,400 L395,500 L380,600"
+                    stroke="rgba(255,255,255,0.12)" stroke-width="1.5" fill="none" />
+                <path d="M420,0 L440,60 L470,130 L450,200" stroke="rgba(255,255,255,0.08)" stroke-width="1"
+                    fill="none" />
+                <path d="M390,120 L350,160 L310,140" stroke="rgba(255,255,255,0.06)" stroke-width="0.8" fill="none" />
+                <path d="M380,250 L340,280 L300,260 L260,300" stroke="rgba(255,255,255,0.07)" stroke-width="0.8"
+                    fill="none" />
+                <path d="M410,180 L450,210 L480,190 L520,230" stroke="rgba(255,255,255,0.06)" stroke-width="0.8"
+                    fill="none" />
+                <path d="M600,0 L610,90 L590,160 L620,250 L580,350 L610,450 L590,600" stroke="rgba(255,255,255,0.08)"
+                    stroke-width="1" fill="none" />
             </svg>
         </div>
 
@@ -423,16 +525,22 @@
         <div id="scanline-overlay"></div>
 
         <!-- Premium Splash Screen -->
-        <div id="splash-screen" class="absolute inset-0 bg-gradient-to-b from-neutral-900 to-neutral-950 z-50 flex flex-col items-center justify-between py-16 transition-opacity duration-700" style="z-index:2000">
+        <div id="splash-screen"
+            class="absolute inset-0 bg-gradient-to-b from-neutral-900 to-neutral-950 z-50 flex flex-col items-center justify-between py-16 transition-opacity duration-700"
+            style="z-index:2000">
             <div class="flex flex-col items-center gap-1 mt-6">
-                <h1 class="text-5xl font-extrabold tracking-[8px] bg-gradient-to-r from-white via-neutral-100 to-neutral-400 bg-clip-text text-transparent font-serif">PIANO</h1>
+                <h1
+                    class="text-5xl font-extrabold tracking-[8px] bg-gradient-to-r from-white via-neutral-100 to-neutral-400 bg-clip-text text-transparent font-serif">
+                    PIANO</h1>
                 <p class="text-xs tracking-[4px] text-neutral-300/60 font-semibold font-mono">BY SAM</p>
             </div>
-            
+
             <div class="flex flex-col items-center gap-4 mb-4 w-full">
                 <div class="w-1/2 flex flex-col items-center gap-2" id="loading-container">
                     <div class="w-full bg-neutral-800 h-1 rounded-full overflow-hidden">
-                        <div id="loading-bar" class="bg-gradient-to-r from-neutral-400 to-white h-full w-0 transition-all duration-1500 ease-out"></div>
+                        <div id="loading-bar"
+                            class="bg-gradient-to-r from-neutral-400 to-white h-full w-0 transition-all duration-1500 ease-out">
+                        </div>
                     </div>
                     <p class="text-[9px] text-neutral-500 uppercase tracking-widest font-mono">Loading Studio...</p>
                 </div>
@@ -455,8 +563,10 @@
         <div class="dashboard-panel" id="dashboard-panel">
             <div class="flex flex-col gap-1.5 bg-black/30 p-1.5 rounded-lg border border-white/5 w-40">
                 <div class="flex justify-between items-center">
-                    <label class="text-[9px] text-white/60 uppercase font-mono tracking-wider font-semibold">Preset</label>
-                    <select id="synth-mode" class="bg-black border border-white text-[8px] text-white font-mono rounded px-1.5 py-0.5 outline-none cursor-pointer">
+                    <label
+                        class="text-[9px] text-white/60 uppercase font-mono tracking-wider font-semibold">Preset</label>
+                    <select id="synth-mode"
+                        class="bg-black border border-white text-[8px] text-white font-mono rounded px-1.5 py-0.5 outline-none cursor-pointer">
                         <option value="grand">Grand Piano</option>
                         <option value="ambient">Ambient Space</option>
                         <option value="organ">Church Organ</option>
@@ -465,8 +575,10 @@
                     </select>
                 </div>
                 <div class="flex justify-between items-center">
-                    <label class="text-[9px] text-white/60 uppercase font-mono tracking-wider font-semibold">Volume</label>
-                    <input id="volume-slider" type="range" min="0" max="100" value="70" class="w-20 h-1 accent-white bg-black rounded-lg appearance-none cursor-pointer">
+                    <label
+                        class="text-[9px] text-white/60 uppercase font-mono tracking-wider font-semibold">Volume</label>
+                    <input id="volume-slider" type="range" min="0" max="100" value="70"
+                        class="w-20 h-1 accent-white bg-black rounded-lg appearance-none cursor-pointer">
                 </div>
             </div>
 
@@ -475,9 +587,9 @@
                     <span id="screen-mode">MODE: GRAND PIANO</span>
                     <span id="screen-octave">OCTAVE: C4 - B5</span>
                 </div>
-                
+
                 <canvas id="visualizer" class="w-full h-8 rounded bg-black/40 border border-neutral-900"></canvas>
-                
+
                 <div class="flex justify-between items-center text-[7px] text-stone-500 font-mono">
                     <span>VOL: <span id="vol-lbl">70%</span></span>
                     <span class="flex items-center gap-1 font-semibold" id="online-indicator">
@@ -489,15 +601,21 @@
 
             <div class="flex flex-col justify-between items-end h-full py-1">
                 <div class="text-right">
-                    <div class="text-black font-mono text-[8px] tracking-wider font-semibold" id="brand-sub">SAM INSTRUMENTS</div>
-                    <div class="text-black font-serif text-[10px] tracking-[2px] font-bold" id="brand-main">PIANO STUDIO</div>
+                    <div class="text-black font-mono text-[8px] tracking-wider font-semibold" id="brand-sub">SAM
+                        INSTRUMENTS</div>
+                    <div class="text-black font-serif text-[10px] tracking-[2px] font-bold" id="brand-main">PIANO STUDIO
+                    </div>
                 </div>
-                
-                <div class="flex items-center gap-2 bg-black/30 p-1 rounded-lg border border-white/5 w-40 justify-between">
-                    <span class="text-[9px] text-white/60 uppercase font-mono tracking-wider font-semibold">Octave</span>
+
+                <div
+                    class="flex items-center gap-2 bg-black/30 p-1 rounded-lg border border-white/5 w-40 justify-between">
+                    <span
+                        class="text-[9px] text-white/60 uppercase font-mono tracking-wider font-semibold">Octave</span>
                     <div class="flex gap-1">
-                        <button id="octave-down" class="bg-black border border-white text-[8px] text-white font-mono rounded px-2.5 py-0.5 hover:bg-neutral-800 active:scale-95 transition-all">&lt;</button>
-                        <button id="octave-up" class="bg-black border border-white text-[8px] text-white font-mono rounded px-2.5 py-0.5 hover:bg-neutral-800 active:scale-95 transition-all">&gt;</button>
+                        <button id="octave-down"
+                            class="bg-black border border-white text-[8px] text-white font-mono rounded px-2.5 py-0.5 hover:bg-neutral-800 active:scale-95 transition-all">&lt;</button>
+                        <button id="octave-up"
+                            class="bg-black border border-white text-[8px] text-white font-mono rounded px-2.5 py-0.5 hover:bg-neutral-800 active:scale-95 transition-all">&gt;</button>
                     </div>
                 </div>
             </div>
@@ -532,7 +650,7 @@
 
         // Creepy whisper messages
         const creepyMessages = [
-            'HELP ME', 'I SEE YOU', 'BEHIND YOU', 'DON\'T LOOK', 
+            'HELP ME', 'I SEE YOU', 'BEHIND YOU', 'DON\'T LOOK',
             'IT\'S HERE', 'RUN', 'CAN YOU HEAR ME', 'I\'M INSIDE',
             'STOP PLAYING', 'TOO LATE', 'HE WATCHES', 'NOT ALONE',
             'YOUR TURN', 'LOOK UP', 'CLOSER', 'DO YOU SEE IT'
@@ -557,13 +675,13 @@
         function drawVisualizer() {
             requestAnimationFrame(drawVisualizer);
             analyser.getByteFrequencyData(dataArray);
-            
+
             canvasCtx.fillStyle = '#050505';
             canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
-            
+
             const barWidth = (canvas.width / bufferLength) * 1.5;
             let x = 0;
-            
+
             for (let i = 0; i < bufferLength; i++) {
                 const barHeight = dataArray[i] / 5.5;
                 const grad = canvasCtx.createLinearGradient(0, canvas.height, 0, canvas.height - barHeight);
@@ -581,7 +699,7 @@
                     grad.addColorStop(0, '#737373');
                     grad.addColorStop(1, '#ffffff');
                 }
-                
+
                 canvasCtx.fillStyle = grad;
                 canvasCtx.fillRect(x, canvas.height - barHeight, barWidth - 1, barHeight);
                 x += barWidth;
@@ -594,17 +712,17 @@
         // Deep sub-bass terror hit (replaces screaming)
         function playTerrorBass(volumeVal) {
             const now = audioCtx.currentTime;
-            
+
             // Sub-bass that you FEEL in your chest
             const subOsc = audioCtx.createOscillator();
             subOsc.type = 'sine';
             subOsc.frequency.setValueAtTime(30, now);
             subOsc.frequency.exponentialRampToValueAtTime(18, now + 2.5);
-            
+
             const subGain = audioCtx.createGain();
             subGain.gain.setValueAtTime(volumeVal * 1.5, now);
             subGain.gain.exponentialRampToValueAtTime(0.001, now + 3);
-            
+
             subOsc.connect(subGain);
             subGain.connect(analyser);
             subOsc.start(now);
@@ -723,19 +841,19 @@
         function playHeartbeat(volumeVal, rate) {
             const now = audioCtx.currentTime;
             const beatInterval = 60 / rate;
-            
+
             for (let beat = 0; beat < 2; beat++) {
                 const t = now + beat * (beatInterval * 0.3);
                 const osc = audioCtx.createOscillator();
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(beat === 0 ? 50 : 40, t);
                 osc.frequency.exponentialRampToValueAtTime(25, t + 0.15);
-                
+
                 const g = audioCtx.createGain();
                 g.gain.setValueAtTime(0, t);
                 g.gain.linearRampToValueAtTime(volumeVal * (beat === 0 ? 0.3 : 0.2), t + 0.02);
                 g.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
-                
+
                 osc.connect(g);
                 g.connect(analyser);
                 osc.start(t);
@@ -749,17 +867,17 @@
             const osc1 = audioCtx.createOscillator();
             osc1.type = 'sine';
             osc1.frequency.value = 80;
-            
+
             const osc2 = audioCtx.createOscillator();
             osc2.type = 'sine';
             osc2.frequency.value = 83; // Slight beating
-            
+
             const g = audioCtx.createGain();
             g.gain.setValueAtTime(0, now);
             g.gain.linearRampToValueAtTime(volumeVal * 0.08, now + 1);
             g.gain.linearRampToValueAtTime(volumeVal * 0.06, now + 3);
             g.gain.exponentialRampToValueAtTime(0.001, now + 5);
-            
+
             osc1.connect(g);
             osc2.connect(g);
             g.connect(analyser);
@@ -784,9 +902,9 @@
             for (let i = 0; i < imageData.data.length; i += 4) {
                 const v = Math.random() * 255;
                 imageData.data[i] = v;
-                imageData.data[i+1] = v;
-                imageData.data[i+2] = v;
-                imageData.data[i+3] = 40;
+                imageData.data[i + 1] = v;
+                imageData.data[i + 2] = v;
+                imageData.data[i + 3] = 40;
             }
             ctx.putImageData(imageData, 0, 0);
             overlay.style.backgroundImage = `url(${staticNoiseCanvas.toDataURL()})`;
@@ -874,7 +992,7 @@
 
         function updateHorrorPhase() {
             const prevPhase = horrorPhase;
-            
+
             if (clicks >= 28) horrorPhase = 4;
             else if (clicks >= 20) horrorPhase = 3;
             else if (clicks >= 13) horrorPhase = 2;
@@ -909,7 +1027,7 @@
                 spawnBloodDrips(5);
                 corruptUIText();
                 playDrone(vol);
-                
+
                 // Start periodic whispers
                 whisperInterval = setInterval(() => {
                     if (horrorPhase >= 2 && Date.now() - lastInteraction < 8000) {
@@ -927,7 +1045,7 @@
                 spawnBloodDrips(10);
                 corruptUIText();
                 triggerFlicker(800, 0.3);
-                
+
                 // Occasional flicker + glitch text flash
                 const terrorInterval = setInterval(() => {
                     if (horrorPhase >= 3 && !finalTriggered) {
@@ -936,7 +1054,7 @@
                         }
                         if (Math.random() < 0.3) {
                             const glitchOverlay = document.getElementById('glitch-text-overlay');
-                            document.getElementById('glitch-msg-text').textContent = 
+                            document.getElementById('glitch-msg-text').textContent =
                                 creepyMessages[Math.floor(Math.random() * creepyMessages.length)];
                             glitchOverlay.style.opacity = '1';
                             setTimeout(() => { glitchOverlay.style.opacity = '0'; }, 200);
@@ -959,7 +1077,7 @@
             const vol = parseFloat(document.getElementById('volume-slider').value) / 100;
 
             document.getElementById('main-container').classList.remove('heartbeat-active');
-            
+
             // Instant white flash
             document.getElementById('flicker-overlay').style.opacity = '1';
 
@@ -968,7 +1086,7 @@
                 const layer = document.getElementById('jumpscare-layer');
                 const img = document.getElementById('scare-img');
                 img.src = images[Math.floor(Math.random() * images.length)];
-                
+
                 document.getElementById('flicker-overlay').style.opacity = '0';
                 layer.classList.add('show-scare', 'scare-transform');
                 playTerrorBass(vol); // Play the horrific traumatic bass sound
@@ -984,11 +1102,11 @@
                 // Hold the scare for a long terrifying moment
                 setTimeout(() => {
                     layer.classList.remove('show-scare', 'scare-transform');
-                    
+
                     // Aftermath: screen stays heavily corrupted
                     document.getElementById('static-overlay').style.opacity = '0.7';
                     document.getElementById('vignette-overlay').style.opacity = '1';
-                    
+
                     // One more delayed mini-scare shortly after
                     setTimeout(() => {
                         if (finalTriggered) {
@@ -1010,9 +1128,9 @@
             const blackKeys = document.querySelectorAll('.black-key');
             const dashboard = document.querySelector('.dashboard-panel');
             const digitalScreen = document.getElementById('digital-screen');
-            
+
             const intensity = Math.min(1, clicks / 28);
-            
+
             // Keys turn blood red gradually
             whiteKeys.forEach((key, idx) => {
                 const r = Math.round(255 - (255 - 138) * intensity);
@@ -1020,7 +1138,7 @@
                 const b = Math.round(255 - 255 * intensity);
                 key.style.background = `linear-gradient(to bottom, #ffffff 0%, rgb(${r}, ${g}, ${b}) 100%)`;
                 key.style.borderBottom = `${5 - Math.round(4 * intensity)}px solid rgb(${Math.round(184 - 100 * intensity)}, ${Math.round(184 - 180 * intensity)}, ${Math.round(184 - 180 * intensity)})`;
-                
+
                 // Corrupted note labels at higher phases
                 if (horrorPhase >= 3 && Math.random() < 0.3) {
                     const span = key.querySelector('span');
@@ -1030,14 +1148,14 @@
                     }
                 }
             });
-            
+
             blackKeys.forEach(key => {
                 const r = Math.round(43 + (138 - 43) * intensity);
                 const g = Math.round(43 - 43 * intensity);
                 const b = Math.round(43 - 43 * intensity);
                 key.style.background = `linear-gradient(to bottom, rgb(${r}, ${g}, ${b}) 0%, #000000 100%)`;
             });
-            
+
             // Dashboard panel corruption
             if (clicks >= 7) {
                 const woodIntensity = Math.min(1, (clicks - 7) / 21);
@@ -1045,7 +1163,7 @@
                 const g = Math.round(255 - 255 * woodIntensity);
                 const b = Math.round(255 - 255 * woodIntensity);
                 dashboard.style.background = `linear-gradient(to bottom, rgb(${r}, ${g}, ${b}) 0%, #000000 100%)`;
-                
+
                 const textColor = Math.round(255 * woodIntensity);
                 document.getElementById('brand-sub').style.color = `rgb(${textColor}, ${textColor}, ${textColor})`;
                 document.getElementById('brand-main').style.color = `rgb(${textColor}, ${textColor}, ${textColor})`;
@@ -1066,12 +1184,12 @@
 
         function playNote(freq) {
             if (!firstInteractionTime) firstInteractionTime = Date.now();
-            
-            // Only progress the horror after 25 seconds of normal use
-            if (Date.now() - firstInteractionTime > 25000) {
+
+            // Only progress the horror after 15 seconds of normal use
+            if (Date.now() - firstInteractionTime > 15000) {
                 clicks++;
             }
-            
+
             lastInteraction = Date.now();
             updateHorrorPhase();
 
@@ -1104,7 +1222,7 @@
 
             osc.frequency.value = freq;
             osc.detune.setValueAtTime(detuneVal, audioCtx.currentTime);
-            
+
             if (detuneVal > 0) {
                 osc2.type = 'sawtooth';
                 osc2.frequency.value = freq * (horrorPhase >= 3 ? 1.414 : 1.059);
@@ -1126,7 +1244,7 @@
                     gain2.connect(gainNode);
                     osc2.start();
                     osc2.stop(audioCtx.currentTime + 2.0);
-                    
+
                     gainNode.gain.setValueAtTime(volumeVal, audioCtx.currentTime);
                     gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.0);
                 } else if (mode === 'ambient') {
@@ -1140,7 +1258,7 @@
                     gain2.connect(gainNode);
                     osc2.start();
                     osc2.stop(audioCtx.currentTime + 4.0);
-                    
+
                     gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
                     gainNode.gain.linearRampToValueAtTime(volumeVal, audioCtx.currentTime + 0.1);
                     gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 4.0);
@@ -1154,23 +1272,23 @@
                     gain2.connect(gainNode);
                     osc2.start();
                     osc2.stop(audioCtx.currentTime + 1.5);
-                    
+
                     gainNode.gain.setValueAtTime(volumeVal, audioCtx.currentTime);
                     gainNode.gain.linearRampToValueAtTime(volumeVal * 0.8, audioCtx.currentTime + 0.1);
                     gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
                 } else if (mode === 'guitar') {
                     // Plucked string approximation
                     osc.type = 'sawtooth';
-                    
+
                     // Lowpass filter for pluck
                     const filter = audioCtx.createBiquadFilter();
                     filter.type = 'lowpass';
                     filter.frequency.setValueAtTime(3000, audioCtx.currentTime);
                     filter.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 1.5);
-                    
+
                     osc.connect(filter);
                     filter.connect(gainNode);
-                    
+
                     gainNode.gain.setValueAtTime(volumeVal * 1.5, audioCtx.currentTime);
                     gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.5);
                 } else {
@@ -1185,7 +1303,7 @@
                     gain2.connect(gainNode);
                     osc2.start();
                     osc2.stop(audioCtx.currentTime + 0.5);
-                    
+
                     gainNode.gain.setValueAtTime(volumeVal, audioCtx.currentTime);
                     gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
                 }
@@ -1194,7 +1312,7 @@
             if (mode !== 'guitar' || detuneVal > 0) {
                 osc.connect(gainNode);
             }
-            
+
             gainNode.connect(analyser);
 
             osc.start();
@@ -1248,7 +1366,7 @@
 
         const whiteNames = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'A', 'B', 'C'];
         const whiteOffsets = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21, 23, 24];
-        
+
         const blackOffsets = [
             { afterIndex: 0, semitone: 1, label: 'C#' },
             { afterIndex: 1, semitone: 3, label: 'D#' },
@@ -1282,27 +1400,27 @@
         function renderKeyboard() {
             const keyboard = document.getElementById('piano-keyboard');
             keyboard.innerHTML = '';
-            
+
             const keyboardWidth = keyboard.clientWidth;
             const keyboardHeight = keyboard.clientHeight;
             const whiteKeyWidth = keyboardWidth / 15;
             const blackKeyWidth = Math.max(16, whiteKeyWidth * 0.54);
             const blackKeyHeight = keyboardHeight * 0.58;
-            
+
             whiteOffsets.forEach((offset, idx) => {
                 const key = document.createElement('div');
                 key.className = 'white-key';
-                
+
                 let noteOctave = currentOctave;
                 if (idx >= 7 && idx < 14) noteOctave += 1;
                 else if (idx >= 14) noteOctave += 2;
 
                 const noteName = `${whiteNames[idx]}${noteOctave}`;
                 key.innerHTML = `<span>${noteName}</span>`;
-                
+
                 const freq = getNoteFreq(offset);
                 key.dataset.freq = freq; // Save for touch drag
-                
+
                 key.addEventListener('mousedown', () => {
                     playNote(freq);
                     key.classList.add('active');
@@ -1315,7 +1433,7 @@
                 });
                 key.addEventListener('mouseup', () => key.classList.remove('active'));
                 key.addEventListener('mouseleave', () => key.classList.remove('active'));
-                
+
                 key.addEventListener('touchstart', (e) => {
                     e.preventDefault();
                     playNote(freq);
@@ -1323,7 +1441,7 @@
                     currentDraggedKey = key;
                 });
                 key.addEventListener('touchend', () => key.classList.remove('active'));
-                
+
                 keyboard.appendChild(key);
             });
 
@@ -1332,13 +1450,13 @@
                 key.className = 'black-key';
                 key.style.width = `${blackKeyWidth}px`;
                 key.style.height = `${blackKeyHeight}px`;
-                
+
                 let noteOctave = currentOctave;
                 if (black.afterIndex >= 7) noteOctave += 1;
 
                 const noteName = `${black.label}${noteOctave}`;
                 key.innerHTML = `<span>${noteName}</span>`;
-                
+
                 const leftPos = (black.afterIndex + 1) * whiteKeyWidth - (blackKeyWidth / 2);
                 key.style.left = `${leftPos}px`;
                 key.style.top = '2px';
@@ -1359,7 +1477,7 @@
                 });
                 key.addEventListener('mouseup', () => key.classList.remove('active'));
                 key.addEventListener('mouseleave', () => key.classList.remove('active'));
-                
+
                 key.addEventListener('touchstart', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -1368,7 +1486,7 @@
                     currentDraggedKey = key;
                 });
                 key.addEventListener('touchend', () => key.classList.remove('active'));
-                
+
                 keyboard.appendChild(key);
             });
 
@@ -1377,7 +1495,7 @@
                 e.preventDefault();
                 const touch = e.touches[0];
                 const element = document.elementFromPoint(touch.clientX, touch.clientY);
-                
+
                 if (element && (element.classList.contains('white-key') || element.classList.contains('black-key'))) {
                     if (currentDraggedKey !== element) {
                         if (currentDraggedKey) currentDraggedKey.classList.remove('active');
@@ -1395,7 +1513,7 @@
 
             const nextOctave = currentOctave + 1;
             document.getElementById('screen-octave').innerText = `OCTAVE: C${currentOctave} - B${nextOctave}`;
-            
+
             // Re-apply horror visuals after re-render
             if (clicks > 0) updateHorrorVisuals();
         }
@@ -1403,7 +1521,7 @@
         // Idle monitoring — ambient horror during inactivity
         setInterval(() => {
             const timeSinceLastClick = Date.now() - lastInteraction;
-            
+
             if (horrorPhase >= 3 && timeSinceLastClick >= 3000 && timeSinceLastClick < 4000 && !finalTriggered) {
                 // Ambient mini-scare during inactivity at high horror
                 const layer = document.getElementById('jumpscare-layer');
@@ -1422,7 +1540,7 @@
                 horrorPhase = 0;
                 finalTriggered = false;
                 if (whisperInterval) clearInterval(whisperInterval);
-                
+
                 // Clean all overlays
                 document.getElementById('vignette-overlay').style.opacity = '0';
                 document.getElementById('crack-overlay').style.opacity = '0';
@@ -1432,7 +1550,7 @@
                 document.getElementById('scanline-overlay').style.opacity = '0';
                 document.getElementById('glitch-text-overlay').style.opacity = '0';
                 document.getElementById('main-container').classList.remove('heartbeat-active');
-                
+
                 // Restore UI text
                 document.getElementById('status-time').textContent = '12:00';
                 document.getElementById('status-wifi').textContent = 'WiFi Connected';
@@ -1442,7 +1560,7 @@
                 document.getElementById('online-text').textContent = 'ONLINE';
                 document.getElementById('online-dot').style.background = 'white';
                 document.getElementById('digital-screen').style.borderColor = '#ffffff';
-                
+
                 updateHorrorVisuals();
                 renderKeyboard();
             }
@@ -1486,21 +1604,21 @@
             const volumeVal = parseFloat(document.getElementById('volume-slider').value) / 100;
 
             // Beautiful, cascading harp-like arpeggio (C Major 9)
-            const notes = [261.63, 329.63, 392.00, 493.88, 587.33, 783.99, 1046.50]; 
-            
+            const notes = [261.63, 329.63, 392.00, 493.88, 587.33, 783.99, 1046.50];
+
             notes.forEach((freq, i) => {
                 const osc = audioCtx.createOscillator();
                 osc.type = 'sine';
                 osc.frequency.value = freq;
-                
+
                 const gain = audioCtx.createGain();
                 gain.gain.setValueAtTime(0, now + i * 0.12);
                 gain.gain.linearRampToValueAtTime(volumeVal * 0.15, now + i * 0.12 + 0.1);
                 gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 4.0);
-                
+
                 osc.connect(gain);
                 gain.connect(analyser);
-                
+
                 osc.start(now + i * 0.12);
                 osc.stop(now + i * 0.12 + 4.0);
             });
@@ -1511,13 +1629,13 @@
                 const osc = audioCtx.createOscillator();
                 osc.type = 'triangle';
                 osc.frequency.value = freq;
-                
+
                 const gain = audioCtx.createGain();
                 gain.gain.setValueAtTime(0, now);
                 gain.gain.linearRampToValueAtTime(volumeVal * 0.08, now + 1.5);
                 gain.gain.linearRampToValueAtTime(volumeVal * 0.05, now + 3.0);
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 5.0);
-                
+
                 // Add a gentle filter for warmth
                 const filter = audioCtx.createBiquadFilter();
                 filter.type = 'lowpass';
@@ -1528,7 +1646,7 @@
                 osc.connect(filter);
                 filter.connect(gain);
                 gain.connect(analyser);
-                
+
                 osc.start(now);
                 osc.stop(now + 5.0);
             });
@@ -1547,7 +1665,7 @@
 
             // Animate loading bar
             setTimeout(() => { bar.style.width = '100%'; }, 100);
-            
+
             // Hide splash after loading finishes
             setTimeout(() => { splash.classList.add('opacity-0', 'pointer-events-none'); }, 2500);
         });
@@ -1563,4 +1681,5 @@
         });
     </script>
 </body>
+
 </html>

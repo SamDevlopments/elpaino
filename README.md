@@ -2,7 +2,6 @@
 
 - Experience realistic sound, dynamic pitch controls, and an intuitive responsive interface designed for seamless music creation anywhere.
 
--
 
 # ✧ Key Features ✧
 

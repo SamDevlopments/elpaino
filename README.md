@@ -17,4 +17,4 @@
 
 # ✦ Devs
 ✦ Designed & created by Sam
-✦ Published by SamDevlopments
+✦ Published by SamDevlopments ✦

@@ -1,6 +1,6 @@
 # ✦ elpiano 
 
-✦ Experience realistic sound, dynamic pitch controls, and an intuitive responsive interface designed for seamless music creation anywhere.
+✦ Experience realistic sound, dynamic pitch controls, and an intuitive responsive interface designed for seamless experience.
 
 
 # ✧ Key Features 

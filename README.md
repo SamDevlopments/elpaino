@@ -2,6 +2,8 @@
 
 - Experience realistic sound, dynamic pitch controls, and an intuitive responsive interface designed for seamless music creation anywhere.
 
+-
+
 # ✧ Key Features ✧
 
 - Sound Presets: Grand Piano, Ambient Space, Church Organ, Acoustic Guitar, and 8-Bit Retro   

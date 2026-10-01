@@ -1,9 +1,9 @@
-# ✦ elpiano ✦
+# ✦ elpiano 
 
 - Experience realistic sound, dynamic pitch controls, and an intuitive responsive interface designed for seamless music creation anywhere.
 
 
-# ✧ Key Features ✧
+# ✧ Key Features 
 
 - Sound Presets: Grand Piano, Ambient Space, Church Organ, Acoustic Guitar, and 8-Bit Retro   
 
@@ -14,3 +14,7 @@
 - Multi-touch & Glissando Support: Smooth, continuous playback and responsive touch gestures   
 
 - Volume Control: Master volume slider for precise sound adjustments   
+
+# ✦ Devs
+✦ Designed & created by Sam
+✦ Published by SamDevlopments
